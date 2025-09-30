@@ -23,3 +23,9 @@ nav ul{
   justify-content: space-evenly;
   list-style-type: none;
 }
+
+.specs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
