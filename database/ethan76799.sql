@@ -1,7 +1,7 @@
-CREATE TYPE public." account_type" AS ENUM
+CREATE TYPE public."account_type" AS ENUM
     ('Client', 'Employee', 'Admin');
 
-ALTER TYPE public." account_type"
+ALTER TYPE public."account_type"
     OWNER TO ethan76799;
 
 -- Table structure for table 'classification'
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS public.inventory
 
 -- Create relationship between 'classification' and 'inventory' tables
 ALTER TABLE IF EXISTS public.inventory
-	ADD CONSTRAINTS fk_classification FOREIGN KEY (classification_id)
+	ADD CONSTRAINT fk_classification FOREIGN KEY (classification_id)
 	REFERENCES public.classification (classification_id) MATCH SIMPLE
 	ON UPDATE CASCADE
 	ON DELETE NO ACTION;
