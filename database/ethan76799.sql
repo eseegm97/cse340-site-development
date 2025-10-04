@@ -236,3 +236,13 @@ VALUES   (
     'White',
     5
   );
+
+-- Modify GM Hummer record
+UPDATE public.inventory
+SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
+WHERE inv_model = 'Hummer';
+
+-- Update inventory images
+UPDATE public.inventory
+SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+	inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
