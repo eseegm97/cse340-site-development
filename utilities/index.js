@@ -58,6 +58,40 @@ Util.buildClassificationGrid = async function(data){
 }
 
 /* ****************************************
+ * Build HTML for a single vehicle detail
+ * **************************************** */
+Util.buildVehicleDetail = async function(vehicle){
+  if (!vehicle) return ''
+
+  const price = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price)
+  const miles = new Intl.NumberFormat('en-US').format(vehicle.inv_miles)
+
+  let detail = ''
+  detail += '<section id="vehicle-detail">'
+  detail += '  <h1>' + vehicle.inv_make + ' ' + vehicle.inv_model + '</h1>'
+  detail += '  <div class="detail-grid">'
+  // Full size image
+  detail += '    <div class="detail-image">'
+  detail += '      <img src="' + vehicle.inv_image + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + '" />'
+  detail += '    </div>'
+  // Details
+  detail += '    <div class="detail-info">'
+  detail += '      <h2>' + vehicle.inv_make + ' ' + vehicle.inv_model + ' (' + vehicle.inv_year + ')</h2>'
+  detail += '      <p class="price">Price: ' + price + '</p>'
+  detail += '      <p class="miles">Mileage: ' + miles + ' miles</p>'
+  detail += '      <p class="color">Color: ' + vehicle.inv_color + '</p>'
+  detail += '      <p class="classification">Classification: ' + (vehicle.classification_name || '') + '</p>'
+  detail += '      <hr />'
+  detail += '      <h3>Description</h3>'
+  detail += '      <p class="description">' + vehicle.inv_description + '</p>'
+  detail += '    </div>'
+  detail += '  </div>'
+  detail += '</section>'
+
+  return detail
+}
+
+/* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
  * General Error Handling
