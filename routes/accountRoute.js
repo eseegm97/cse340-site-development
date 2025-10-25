@@ -19,4 +19,7 @@ module.exports = { buildLogin }
 // Route to display login view
 router.get('/login', utilities.handleErrors(accountController.buildLogin))
 
+// Route to display registration view
+router.get('/register', utilities.handleErrors(accountController.buildRegister))
+
 module.exports = router

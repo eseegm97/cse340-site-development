@@ -59,6 +59,85 @@ nav ul{
   flex-direction: column;
 }
 
-#delorean-reviews {
-  
+/* Registration / Login form styles */
+.register-page,
+.login-page {
+  max-width: 520px;
+  margin: 2.5rem auto;
+  padding: 1.75rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(22, 28, 37, 0.08);
 }
+
+.register-page h1,
+.login-page h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  color: #16202b;
+}
+
+.form--register .form-group,
+.login-page .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.9rem;
+}
+
+.form--register label {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #334e68;
+}
+
+.form--register input[type="text"],
+.form--register input[type="email"],
+.form--register input[type="password"],
+.login-page input[type="email"],
+.login-page input[type="password"] {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1dbe6;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #102027;
+}
+
+.form--register input:focus,
+.login-page input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+.form-text {
+  display: block;
+  margin-top: 0.35rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: #0b7285;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover { background: #095f66 }
+
+/* Flash / messages styling (express-messages) */
+.messages {
+  max-width: 520px;
+  margin: 1rem auto 0;
+}
+.messages .alert {
+  padding: 0.6rem 0.9rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+.messages .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #bbf7d0 }
+.messages .alert-danger { background: #fff1f2; color: #9f1239; border: 1px solid #fecaca }
