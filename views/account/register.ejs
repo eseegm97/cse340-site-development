@@ -14,9 +14,7 @@
 	<form id="registerForm" class="form--register" action="/account/register" method="post">
 		<div class="form-group">
 			<label for="account_firstname">First name</label>
-			<input type="text" id="account_firstname" name="account_firstname" required
-				value="<%= typeof data !== 'undefined' && data.account_firstname ? data.account_firstname : '' %>"
-				placeholder="First name">
+			<input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
 		</div>
 
 		<div class="form-group">
