@@ -14,25 +14,18 @@
 
 		<div class="form-group">
 			<label for="account_lastname">Last name</label>
-			<input type="text" id="account_lastname" name="account_lastname" required
-				value="<%= typeof data !== 'undefined' && data.account_lastname ? data.account_lastname : '' %>"
-				placeholder="Last name">
+			<input type="text" id="account_lastname" name="account_lastname" required placeholder="Last name">
 		</div>
 
 		<div class="form-group">
 			<label for="account_email">Email address</label>
-			<input type="email" id="account_email" name="account_email" required
-				value="<%= typeof data !== 'undefined' && data.account_email ? data.account_email : '' %>"
-				placeholder="you@example.com">
+			<input type="email" id="account_email" name="account_email" required placeholder="you@example.com">
 		</div>
 
 		<div class="form-group">
 			<label for="account_password">Password</label>
-			<input type="password" id="account_password" name="account_password" required minlength="12"
-				pattern="^(?=.{12,}$)(?=.*[A-Z])(?=.*\d)(?=.*\W).*$"
-				aria-describedby="passwordHelp"
-				placeholder="Create a strong password">
-			<small id="passwordHelp" class="form-text">Password must be at least 12 characters, contain 1 uppercase letter, 1 number and 1 special character.</small>
+			<span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span>
+			<input type="password" name="account_password" id="accountPassword" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
 		</div>
 
 		<div class="form-group">
