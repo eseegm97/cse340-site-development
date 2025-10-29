@@ -25,5 +25,5 @@ async function checkExistingEmail(account_email){
   }
 }
 
-// Export the registerAccount function for use in controllers/routes
-module.exports = { registerAccount }
+// Export the registerAccount and checkExistingEmail functions for use in controllers/routes
+module.exports = { registerAccount, checkExistingEmail }
