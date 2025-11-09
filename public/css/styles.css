@@ -190,3 +190,94 @@ nav ul{
 .btn-primary:hover {
   background: #095f66;
 }
+
+/* Add Classification form styling */
+.add-classification-page {
+  max-width: 520px;
+  margin: 2.5rem auto;
+  padding: 1.75rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(22, 28, 37, 0.08);
+}
+
+.add-classification-page h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  color: #16202b;
+}
+
+.form-instructions {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-instructions p {
+  margin: 0;
+  color: #92400e;
+  font-size: 0.9rem;
+}
+
+.form--add-classification .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.9rem;
+}
+
+.form--add-classification label {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #334e68;
+}
+
+.form--add-classification input[type="text"] {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1dbe6;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #102027;
+}
+
+.form--add-classification input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+.validation-message {
+  display: none;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.validation-message.error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.validation-message.success {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* Error notice styling */
+.notice {
+  background: #fff1f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  list-style: none;
+}
+
+.notice li {
+  color: #9f1239;
+  margin-bottom: 0.25rem;
+}
