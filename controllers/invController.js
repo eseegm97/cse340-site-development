@@ -74,6 +74,20 @@ invCont.buildAddClassification = async function (req, res, next) {
 }
 
 /* ***************************
+ *  Build add inventory view
+ * ************************** */
+invCont.buildAddInventory = async function (req, res, next) {
+  let nav = await utilities.getNav()
+  let classificationList = await utilities.buildClassificationList()
+  res.render("./inventory/add-inventory", {
+    title: "Add New Vehicle",
+    nav,
+    classificationList,
+    errors: null,
+  })
+}
+
+/* ***************************
  *  Process add classification form
  * ************************** */
 invCont.processAddClassification = async function (req, res) {
@@ -139,6 +153,133 @@ invCont.processAddClassification = async function (req, res) {
     res.status(501).render("inventory/add-classification", {
       title: "Add New Classification",
       nav,
+      errors: null
+    })
+  }
+}
+
+/* ***************************
+ *  Process add inventory form
+ * ************************** */
+invCont.processAddInventory = async function (req, res) {
+  let nav = await utilities.getNav()
+  let classificationList = await utilities.buildClassificationList()
+  
+  const { 
+    inv_make, 
+    inv_model, 
+    inv_year, 
+    inv_description, 
+    inv_image, 
+    inv_thumbnail, 
+    inv_price, 
+    inv_miles, 
+    inv_color, 
+    classification_id 
+  } = req.body
+
+  // Inline validation
+  const errors = []
+  
+  // Required field validations
+  if (!inv_make || !inv_make.trim()) {
+    errors.push({ msg: "Make is required." })
+  }
+  if (!inv_model || !inv_model.trim()) {
+    errors.push({ msg: "Model is required." })
+  }
+  if (!inv_year || !inv_year.trim()) {
+    errors.push({ msg: "Year is required." })
+  } else if (!/^\d{4}$/.test(inv_year)) {
+    errors.push({ msg: "Year must be a 4-digit number." })
+  } else {
+    const year = parseInt(inv_year)
+    const currentYear = new Date().getFullYear()
+    if (year < 1900 || year > currentYear + 1) {
+      errors.push({ msg: `Year must be between 1900 and ${currentYear + 1}.` })
+    }
+  }
+  if (!inv_description || !inv_description.trim()) {
+    errors.push({ msg: "Description is required." })
+  }
+  if (!inv_image || !inv_image.trim()) {
+    errors.push({ msg: "Image path is required." })
+  } else if (!inv_image.startsWith('/images/')) {
+    errors.push({ msg: "Image path must start with '/images/'." })
+  }
+  if (!inv_thumbnail || !inv_thumbnail.trim()) {
+    errors.push({ msg: "Thumbnail path is required." })
+  } else if (!inv_thumbnail.startsWith('/images/')) {
+    errors.push({ msg: "Thumbnail path must start with '/images/'." })
+  }
+  if (!inv_price || isNaN(inv_price) || parseFloat(inv_price) < 0) {
+    errors.push({ msg: "Price must be a valid number greater than or equal to 0." })
+  }
+  if (!inv_miles || isNaN(inv_miles) || parseInt(inv_miles) < 0) {
+    errors.push({ msg: "Mileage must be a valid number greater than or equal to 0." })
+  }
+  if (!inv_color || !inv_color.trim()) {
+    errors.push({ msg: "Color is required." })
+  }
+  if (!classification_id) {
+    errors.push({ msg: "Please select a classification." })
+  }
+  
+  // If validation errors exist, render the form with errors
+  if (errors.length > 0) {
+    // Rebuild classification list with selected value
+    classificationList = await utilities.buildClassificationList(classification_id)
+    return res.render("inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      classificationList,
+      errors: { array: () => errors },
+      inv_make: inv_make || '',
+      inv_model: inv_model || '',
+      inv_year: inv_year || '',
+      inv_description: inv_description || '',
+      inv_image: inv_image || '',
+      inv_thumbnail: inv_thumbnail || '',
+      inv_price: inv_price || '',
+      inv_miles: inv_miles || '',
+      inv_color: inv_color || '',
+      classification_id: classification_id || ''
+    })
+  }
+
+  // If validation passes, proceed with adding the inventory item
+  const addResult = await invModel.addInventory(
+    inv_make.trim(), 
+    inv_model.trim(), 
+    inv_year, 
+    inv_description.trim(), 
+    inv_image.trim(), 
+    inv_thumbnail.trim(), 
+    parseFloat(inv_price), 
+    parseInt(inv_miles), 
+    inv_color.trim(), 
+    parseInt(classification_id)
+  )
+
+  if (addResult) {
+    req.flash(
+      "notice",
+      `The ${inv_year} ${inv_make} ${inv_model} was successfully added to inventory.`
+    )
+    // Rebuild navigation in case new classification was used
+    nav = await utilities.getNav()
+    res.status(201).render("inventory/management", {
+      title: "Vehicle Management",
+      nav,
+      errors: null
+    })
+  } else {
+    req.flash("notice", "Sorry, the vehicle could not be added to inventory.")
+    classificationList = await utilities.buildClassificationList(classification_id)
+    res.status(501).render("inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      classificationList,
       errors: null
     })
   }

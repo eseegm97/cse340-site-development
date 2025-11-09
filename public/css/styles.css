@@ -281,3 +281,73 @@ nav ul{
   color: #9f1239;
   margin-bottom: 0.25rem;
 }
+
+/* Add Inventory form styling */
+.add-inventory-page {
+  max-width: 800px;
+  margin: 2.5rem auto;
+  padding: 1.75rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(22, 28, 37, 0.08);
+}
+
+.add-inventory-page h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  color: #16202b;
+}
+
+.form--add-inventory .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.form--add-inventory .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.9rem;
+}
+
+.form--add-inventory .form-group.half-width {
+  margin-bottom: 0;
+}
+
+.form--add-inventory label {
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: #334e68;
+}
+
+.form--add-inventory input[type="text"],
+.form--add-inventory input[type="number"],
+.form--add-inventory select,
+.form--add-inventory textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1dbe6;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #102027;
+  font-family: inherit;
+}
+
+.form--add-inventory textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form--add-inventory input:focus,
+.form--add-inventory select:focus,
+.form--add-inventory textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+@media (max-width: 640px) {
+  .form--add-inventory .form-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -15,6 +15,15 @@ router.post(
   utilities.handleErrors(invController.processAddClassification)
 );
 
+// Route to build add inventory view
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+
+// Route to process add inventory form
+router.post(
+  "/add-inventory", 
+  utilities.handleErrors(invController.processAddInventory)
+);
+
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 
