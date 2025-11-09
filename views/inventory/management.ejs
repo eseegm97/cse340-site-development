@@ -1,0 +1,28 @@
+<!-- Inventory Management View -->
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Flash message display -->
+<%- messages() %>
+
+<div class="management-container">
+  <h2>Vehicle Management</h2>
+  <p>Welcome to the inventory management system. Use the links below to manage vehicle classifications and inventory.</p>
+  
+  <div class="management-actions">
+    <div class="action-item">
+      <h3>Classification Management</h3>
+      <p>Add new vehicle classifications to organize your inventory.</p>
+      <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
+    </div>
+    
+    <div class="action-item">
+      <h3>Inventory Management</h3>
+      <p>Add new vehicles to your inventory system.</p>
+      <a href="/inv/add-inventory" class="btn btn-primary">Add New Vehicle</a>
+    </div>
+  </div>
+</div>
