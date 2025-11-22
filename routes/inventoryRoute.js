@@ -30,6 +30,9 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route to build inventory detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId));
 
+// Route to get inventory by classification as JSON
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+
 // Intentional error route for testing error handling
 router.get("/error-test", utilities.handleErrors(invController.triggerError));
 
