@@ -36,4 +36,7 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 // Intentional error route for testing error handling
 router.get("/error-test", utilities.handleErrors(invController.triggerError));
 
+// Route to build inventory edit view
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventory));
+
 module.exports = router;
