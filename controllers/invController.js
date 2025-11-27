@@ -395,4 +395,67 @@ invCont.updateInventory = async function (req, res, next) {
   }
 }
 
+/* ***************************
+ *  Build delete inventory view
+ * ************************** */
+invCont.deleteInventoryView = async (req, res, next) => {
+    const inv_id = parseInt(req.params.inv_id)
+    let nav = await utilities.getNav()
+    const itemData = await invModel.getInventoryItemByInvId(inv_id)
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("./inventory/delete-confirm", {
+        title: `Delete ${itemName}`,
+        nav,
+        errors: null,
+        inv_id: itemData.inv_id,
+        inv_make: itemData.inv_make,
+        inv_model: itemData.inv_model,
+        inv_price: itemData.inv_price,
+        inv_year: itemData.inv_year
+    })
+}
+
+/* *******************************************
+ * Proccess delete inventory
+ * ******************************************* */
+invCont.deleteInventory = async function(req, res) {
+    let nav = await utilities.getNav()
+    const { inv_id, inv_make, inv_model }  = req.body
+
+    // Delete all reviews before deleting inventory because of foreign key contraints
+    await invModel.deleteAllReviewsByInvId(inv_id)
+
+    const result = await invModel.deleteInventory(inv_id)
+
+    if (result) {
+        req.flash(
+            "notice",
+            `The ${inv_make} ${inv_model} was successfully deleted.`
+        )
+        const classificationSelect = await utilities.buildClassificationList()
+        res.status(201).render("./inventory/management", {
+            title: "Vehicle Management",
+            nav,
+            classificationSelect
+        })
+    } else {
+        req.flash(
+            "notice",
+            "Sorry, deleting vehicle failed."
+        )
+        const itemName = `${inv_make} ${inv_model}`
+        res.status(501).render("./inventory/delete-inventory", {
+            title: `Delete ${itemName}`,
+            nav,
+            errors: null,
+            inv_id,
+            inv_make,
+            inv_model,
+            inv_price,
+            inv_year
+        })
+    }
+}
+
 module.exports = invCont

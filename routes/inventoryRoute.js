@@ -10,19 +10,13 @@ router.get("/", utilities.handleErrors(invController.buildManagement));
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
 
 // Route to process add classification form
-router.post(
-  "/add-classification", 
-  utilities.handleErrors(invController.processAddClassification)
-);
+router.post("/add-classification", utilities.handleErrors(invController.processAddClassification));
 
 // Route to build add inventory view
 router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
 
 // Route to process add inventory form
-router.post(
-  "/add-inventory", 
-  utilities.handleErrors(invController.processAddInventory)
-);
+router.post("/add-inventory", utilities.handleErrors(invController.processAddInventory));
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
@@ -41,5 +35,11 @@ router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEdit
 
 // Route to handle incoming requests
 router.post("/update/", utilities.handleErrors(invController.updateInventory));
+
+// Route to get delete view
+router.get("/delete/:inv_id", utilities.checkLogin, utilities.checkEmployeeAdmin, utilities.handleErrors(invController.deleteInventoryView));
+
+// Process delete inventory
+router.post("/delete/", utilities.checkLogin, utilities.checkEmployeeAdmin, utilities.handleErrors(invController.deleteInventory));
 
 module.exports = router;
