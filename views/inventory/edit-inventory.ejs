@@ -14,7 +14,7 @@
     <p><strong>Note:</strong> All fields are required. Please fill out the entire form to modify this vehicle in the inventory.</p>
   </div>
 
-  <form id="editInventoryForm" class="form--edit-inventory" action="/inv/update-inventory" method="post">
+  <form id="updateForm" class="form--edit-inventory" action="/inv/update-inventory" method="post">
     
     <div class="form-row">
       <div class="form-group half-width">
@@ -153,14 +153,18 @@
     </div>
 
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Update Vehicle</button>
+      <button type="submit" class="btn btn-primary" disabled>Update Vehicle</button>
+      <input type="hidden" name="inv_id"
+      <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+      <% } %>>
     </div>
   </form>
 </div>
 
+<script src="/js/inv-update.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('editInventoryForm');
+  const form = document.getElementById('updateForm');
   
   // Validation functions
   function validateRequired(value, fieldName) {

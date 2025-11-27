@@ -39,4 +39,7 @@ router.get("/error-test", utilities.handleErrors(invController.triggerError));
 // Route to build inventory edit view
 router.get("/edit/:inventory_id", utilities.handleErrors(invController.buildEditInventory));
 
+// Route to handle incoming requests
+router.post("/update/", utilities.handleErrors(invController.updateInventory));
+
 module.exports = router;
