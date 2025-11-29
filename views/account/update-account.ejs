@@ -12,7 +12,7 @@
   <h1><%= title %></h1>
   
   <h2>Account Update</h2>
-  <form id="updateForm" class="form--update-account" action="/account/update" method="post" novalidate>
+  <form id="updateForm" class="form--update-account" action="/account/update-account" method="post" novalidate>
     <div class="form-group">
       <label for="account_firstname">First Name *</label>
       <input type="text" 
@@ -66,7 +66,7 @@
     <p><strong>Important:</strong> Entering a new password below will replace your current password. Please ensure you remember your new password as this change cannot be undone.</p>
   </div>
   
-  <form id="passwordForm" class="form--change-password" action="/account/change-password" method="post" novalidate>
+  <form id="passwordForm" class="form--change-password" action="/account/update-password" method="post" novalidate>
     <div class="form-group">
       <label for="account_password">New Password *</label>
       <div class="password-requirements">
