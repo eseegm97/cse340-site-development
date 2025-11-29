@@ -351,3 +351,207 @@ nav ul{
     grid-template-columns: 1fr;
   }
 }
+
+/* Update Account Page Styles */
+.update-account-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.update-account-page h2 {
+  margin: 2rem 0 1rem 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.update-account-page h2:first-of-type {
+  margin-top: 1rem;
+}
+
+/* Account Update Form Styles */
+.form--update-account .form-group,
+.form--change-password .form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form--update-account label,
+.form--change-password label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form--update-account input[type="text"],
+.form--update-account input[type="email"],
+.form--change-password input[type="password"] {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.form--update-account input:focus,
+.form--change-password input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+.form--update-account span,
+.form--change-password span {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.form--update-account .btn,
+.form--change-password .btn {
+  background-color: #1f2937;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-self: flex-start;
+}
+
+.form--update-account .btn:hover,
+.form--change-password .btn:hover {
+  background-color: #111827;
+}
+
+.update-account-page > p {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.update-account-page > p a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.update-account-page > p a:hover {
+  text-decoration: underline;
+}
+
+/* Form Validation Error Styles */
+.form--update-account .error-message,
+.form--change-password .error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.form--update-account .form-group.has-error input,
+.form--change-password .form-group.has-error input {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+.form--update-account label::after {
+  content: "";
+}
+
+.form--update-account .form-group label,
+.form--change-password .form-group label {
+  position: relative;
+}
+
+/* Required field indicator */
+.form--update-account label[for*="account_"]:not([for="account_password"])::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* Focus states for better accessibility */
+.form--update-account input:focus,
+.form--change-password input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+}
+
+.form--update-account .form-group.has-error input:focus,
+.form--change-password .form-group.has-error input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+/* Password Change Form Specific Styles */
+.password-change-info {
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.password-change-info p {
+  margin: 0;
+  color: #92400e;
+  font-size: 0.875rem;
+}
+
+.password-requirements {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.password-requirements p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 600;
+}
+
+.password-requirements ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style-type: disc;
+}
+
+.password-requirements li {
+  font-size: 0.8125rem;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.password-requirements li:last-child {
+  margin-bottom: 0;
+}
+
+/* Improved password field styling */
+.form--change-password input[type="password"] {
+  font-family: monospace;
+  letter-spacing: 0.1em;
+}
+
+/* Enhanced form separation */
+.form--change-password {
+  border-top: 2px solid #e5e7eb;
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+}

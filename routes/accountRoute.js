@@ -25,7 +25,7 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 
 // Route to display account management view
-router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
+router.get("/", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildAccountManagement))
 
 // Route to process registration
 router.post(
@@ -41,6 +41,28 @@ router.post(
   regValidate.loginRules(),
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
+)
+
+// Route to process logout
+router.get("/logout", utilities.handleErrors(accountController.accountLogout))
+
+// Route to display update account view
+router.get("/update/:account_id", utilities.checkJWTToken, utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateAccount))
+
+// Route to process account information update
+router.post(
+  "/update-account",
+  regValidate.accountUpdateRules(),
+  regValidate.checkAccountUpdateData,
+  utilities.handleErrors(accountController.updateAccount)
+)
+
+// Route to process password update
+router.post(
+  "/update-password",
+  regValidate.passwordUpdateRules(),
+  regValidate.checkPasswordUpdateData,
+  utilities.handleErrors(accountController.updatePassword)
 )
 
 module.exports = router
