@@ -1,105 +1,23 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
 <%- messages() %>
+
 <% if (errors) { %>
-  <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
- </ul>
+    <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
 <% } %>
 
-<div class="add-classification-page">
-  <h1><%= title %></h1>
-  
-  <div class="form-instructions">
-    <p><strong>Important:</strong> The classification name cannot contain spaces or special characters. Only letters and numbers are allowed.</p>
-  </div>
+<form action="/inv/add-classification" method="post">
+    <label for="classification_name">Classification Name:</label>
+    <input type="text" name="classification_name" id="classification_name" required pattern="^[A-Za-z]+$" value="<%= locals.classification_name %>">
+    <p>Name must be alphabetic characters only.</p>
 
-  <form id="addClassificationForm" class="form--add-classification" action="/inv/add-classification" method="post">
-    <div class="form-group">
-      <label for="classification_name">Classification Name</label>
-      <span class="form-text">Enter a name for the new vehicle classification (letters and numbers only)</span>
-      <input 
-        type="text" 
-        name="classification_name" 
-        id="classification_name" 
-        required 
-        placeholder="e.g. Motorcycle, Boat, RV"
-        pattern="^[a-zA-Z0-9]+$"
-        title="Only letters and numbers are allowed, no spaces or special characters"
-        value="<%= locals.classification_name || '' %>"
-      >
-      <div class="validation-message" id="classificationValidation"></div>
-    </div>
-
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Add Classification</button>
-    </div>
-  </form>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('addClassificationForm');
-  const input = document.getElementById('classification_name');
-  const validationMessage = document.getElementById('classificationValidation');
-  
-  function validateClassificationName(value) {
-    // Check if empty
-    if (!value.trim()) {
-      return 'Classification name is required.';
-    }
-    
-    // Check for spaces
-    if (/\s/.test(value)) {
-      return 'Classification name cannot contain spaces.';
-    }
-    
-    // Check for special characters (only allow letters and numbers)
-    if (!/^[a-zA-Z0-9]+$/.test(value)) {
-      return 'Classification name can only contain letters and numbers.';
-    }
-    
-    // Check minimum length
-    if (value.length < 2) {
-      return 'Classification name must be at least 2 characters long.';
-    }
-    
-    return '';
-  }
-  
-  function showValidation(message, isError = true) {
-    validationMessage.textContent = message;
-    validationMessage.className = 'validation-message ' + (isError ? 'error' : 'success');
-    validationMessage.style.display = message ? 'block' : 'none';
-  }
-  
-  // Real-time validation
-  input.addEventListener('input', function() {
-    const value = this.value;
-    const errorMessage = validateClassificationName(value);
-    
-    if (errorMessage) {
-      showValidation(errorMessage, true);
-      this.setCustomValidity(errorMessage);
-    } else if (value.trim()) {
-      showValidation('Valid classification name', false);
-      this.setCustomValidity('');
-    } else {
-      showValidation('');
-      this.setCustomValidity('');
-    }
-  });
-  
-  // Form submission validation
-  form.addEventListener('submit', function(e) {
-    const value = input.value;
-    const errorMessage = validateClassificationName(value);
-    
-    if (errorMessage) {
-      e.preventDefault();
-      showValidation(errorMessage, true);
-      input.focus();
-    }
-  });
-});
-</script>
+    <button type="submit">Add Classification</button>
+</form>

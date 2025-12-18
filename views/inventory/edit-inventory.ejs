@@ -1,311 +1,55 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+<% } else {
+    res.redirect('/')
+} %>
+
 <%- messages() %>
+
 <% if (errors) { %>
-  <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
- </ul>
+    <ul class="notice">
+        <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
 <% } %>
 
-<div class="edit-inventory-page">
-  <h1><%= title %></h1>
-  
-  <div class="form-instructions">
-    <p><strong>Note:</strong> All fields are required. Please fill out the entire form to modify this vehicle in the inventory.</p>
-  </div>
+<form action="/inv/update" method="post" id="updateForm">
+    <p>All fields are required.</p>
+    <label for="classification_id">Classification:</label>
+    <%- classificationDropDown %>
 
-  <form id="updateForm" class="form--edit-inventory" action="/inv/update-inventory" method="post">
-    
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label for="inv_make">Make</label>
-        <input 
-          type="text" 
-          name="inv_make" 
-          id="inv_make" 
-          required 
-          placeholder="e.g. Ford, Chevrolet, Toyota"
-          value="<%= locals.inv_make || '' %>"
-        >
-        <div class="validation-message" id="makeValidation"></div>
-      </div>
+    <label for="inv_make">Make:</label>
+    <input type="text" name="inv_make" id="inv_make" required placeholder="Min of 3 characters" value="<%= locals.inv_make %>" minlength="3">
 
-      <div class="form-group half-width">
-        <label for="inv_model">Model</label>
-        <input 
-          type="text" 
-          name="inv_model" 
-          id="inv_model" 
-          required 
-          placeholder="e.g. Mustang, Camaro, Corolla"
-          value="<%= locals.inv_model || '' %>"
-        >
-        <div class="validation-message" id="modelValidation"></div>
-      </div>
-    </div>
+    <label for="inv_model">Model:</label>
+    <input type="text" name="inv_model" id="inv_model" required placeholder="Min of 3 characters" value="<%= locals.inv_model %>" minlength="3">
 
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label for="inv_year">Year</label>
-        <input 
-          type="text" 
-          name="inv_year" 
-          id="inv_year" 
-          required 
-          placeholder="e.g. 2023"
-          pattern="^(19|20)\d{2}$"
-          maxlength="4"
-          value="<%= locals.inv_year || '' %>"
-        >
-        <div class="validation-message" id="yearValidation"></div>
-      </div>
+    <label for="inv_description">Description:</label>
+    <textarea name="inv_description" id="inv_description" required><%= locals.inv_description %></textarea>
 
-      <div class="form-group half-width">
-        <label for="inv_color">Color</label>
-        <input 
-          type="text" 
-          name="inv_color" 
-          id="inv_color" 
-          required 
-          placeholder="e.g. Red, Blue, Black"
-          value="<%= locals.inv_color || '' %>"
-        >
-        <div class="validation-message" id="colorValidation"></div>
-      </div>
-    </div>
+    <label for="inv_image">Image:</label>
+    <input type="text" name="inv_image" id="inv_image" required value="<%= locals.inv_image %>">
 
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label for="inv_price">Price ($)</label>
-        <input 
-          type="number" 
-          name="inv_price" 
-          id="inv_price" 
-          required 
-          placeholder="e.g. 25000"
-          min="0"
-          step="1"
-          value="<%= locals.inv_price || '' %>"
-        >
-        <div class="validation-message" id="priceValidation"></div>
-      </div>
+    <label for="inv_thumbnail">Thumbnail:</label>
+    <input type="text" name="inv_thumbnail" id="inv_thumbnail" required value="<%= locals.inv_thumbnail %>">
 
-      <div class="form-group half-width">
-        <label for="inv_miles">Mileage</label>
-        <input 
-          type="number" 
-          name="inv_miles" 
-          id="inv_miles" 
-          required 
-          placeholder="e.g. 15000"
-          min="0"
-          step="1"
-          value="<%= locals.inv_miles || '' %>"
-        >
-        <div class="validation-message" id="milesValidation"></div>
-      </div>
-    </div>
+    <label for="inv_price">Price:</label>
+    <input type="number" name="inv_price" id="inv_price" required value="<%= locals.inv_price %>" placeholder="Decimal or integer">
 
-    <div class="form-group">
-      <label for="classification_id">Classification</label>
-      <%- classificationList %>
-      <div class="validation-message" id="classificationValidation"></div>
-    </div>
+    <label for="inv_year">Year:</label>
+    <input type="number" name="inv_year" id="inv_year" required value="<%= locals.inv_year %>" placeholder="4-digit year" min="1900" max="2099">
 
-    <div class="form-group">
-      <label for="inv_description">Description</label>
-      <textarea 
-        name="inv_description" 
-        id="inv_description" 
-        required 
-        placeholder="Provide a detailed description of the vehicle..."
-        rows="4"
-      ><%= locals.inv_description || '' %></textarea>
-      <div class="validation-message" id="descriptionValidation"></div>
-    </div>
+    <label for="inv_miles">Miles:</label>
+    <input type="number" name="inv_miles" id="inv_miles" required value="<%= locals.inv_miles %>" placeholder="Digits only">
 
-    <div class="form-row">
-      <div class="form-group half-width">
-        <label for="inv_image">Image Path</label>
-        <input 
-          type="text" 
-          name="inv_image" 
-          id="inv_image" 
-          required 
-          placeholder="/images/vehicles/no-image.png"
-          value="<%= locals.inv_image || '/images/vehicles/no-image.png' %>"
-        >
-        <div class="validation-message" id="imageValidation"></div>
-      </div>
+    <label for="inv_color">Color:</label>
+    <input type="text" name="inv_color" id="inv_color" required value="<%= locals.inv_color %>">
 
-      <div class="form-group half-width">
-        <label for="inv_thumbnail">Thumbnail Path</label>
-        <input 
-          type="text" 
-          name="inv_thumbnail" 
-          id="inv_thumbnail" 
-          required 
-          placeholder="/images/vehicles/no-image-tn.png"
-          value="<%= locals.inv_thumbnail || '/images/vehicles/no-image-tn.png' %>"
-        >
-        <div class="validation-message" id="thumbnailValidation"></div>
-      </div>
-    </div>
+    <button type="submit" disabled>Update Vehicle</button>
+    <input type="hidden" name="inv_id"
+    <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+    <% } %>>
+</form>
 
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary" disabled>Update Vehicle</button>
-      <input type="hidden" name="inv_id"
-      <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
-      <% } %>>
-    </div>
-  </form>
-</div>
-
-<script src="/js/inv-update.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('updateForm');
-  
-  // Validation functions
-  function validateRequired(value, fieldName) {
-    if (!value.trim()) {
-      return `${fieldName} is required.`;
-    }
-    return '';
-  }
-  
-  function validateYear(value) {
-    const year = parseInt(value);
-    const currentYear = new Date().getFullYear();
-    if (!/^\d{4}$/.test(value)) {
-      return 'Year must be a 4-digit number.';
-    }
-    if (year < 1900 || year > currentYear + 1) {
-      return `Year must be between 1900 and ${currentYear + 1}.`;
-    }
-    return '';
-  }
-  
-  function validateNumber(value, fieldName, min = 0) {
-    if (isNaN(value) || value < min) {
-      return `${fieldName} must be a valid number ${min > 0 ? 'greater than ' + min : 'greater than or equal to 0'}.`;
-    }
-    return '';
-  }
-  
-  function validatePath(value, fieldName) {
-    if (!value.startsWith('/images/')) {
-      return `${fieldName} must start with '/images/'.`;
-    }
-    return '';
-  }
-  
-  function showValidation(element, message, isError = true) {
-    const validationDiv = element.nextElementSibling;
-    if (validationDiv && validationDiv.classList.contains('validation-message')) {
-      validationDiv.textContent = message;
-      validationDiv.className = 'validation-message ' + (isError ? 'error' : 'success');
-      validationDiv.style.display = message ? 'block' : 'none';
-    }
-  }
-  
-  // Real-time validation
-  document.getElementById('inv_make').addEventListener('input', function() {
-    const error = validateRequired(this.value, 'Make');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_model').addEventListener('input', function() {
-    const error = validateRequired(this.value, 'Model');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_year').addEventListener('input', function() {
-    let error = validateRequired(this.value, 'Year');
-    if (!error) error = validateYear(this.value);
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_color').addEventListener('input', function() {
-    const error = validateRequired(this.value, 'Color');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_price').addEventListener('input', function() {
-    let error = validateRequired(this.value, 'Price');
-    if (!error) error = validateNumber(this.value, 'Price');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_miles').addEventListener('input', function() {
-    let error = validateRequired(this.value, 'Mileage');
-    if (!error) error = validateNumber(this.value, 'Mileage');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('classificationList').addEventListener('change', function() {
-    const error = this.value ? '' : 'Please select a classification.';
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_description').addEventListener('input', function() {
-    const error = validateRequired(this.value, 'Description');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_image').addEventListener('input', function() {
-    let error = validateRequired(this.value, 'Image path');
-    if (!error) error = validatePath(this.value, 'Image path');
-    showValidation(this, error, !!error);
-  });
-  
-  document.getElementById('inv_thumbnail').addEventListener('input', function() {
-    let error = validateRequired(this.value, 'Thumbnail path');
-    if (!error) error = validatePath(this.value, 'Thumbnail path');
-    showValidation(this, error, !!error);
-  });
-  
-  // Form submission validation
-  form.addEventListener('submit', function(e) {
-    let hasErrors = false;
-    
-    // Validate all fields
-    const fields = [
-      { id: 'inv_make', name: 'Make', validator: validateRequired },
-      { id: 'inv_model', name: 'Model', validator: validateRequired },
-      { id: 'inv_year', name: 'Year', validator: (val) => validateRequired(val, 'Year') || validateYear(val) },
-      { id: 'inv_color', name: 'Color', validator: validateRequired },
-      { id: 'inv_price', name: 'Price', validator: (val) => validateRequired(val, 'Price') || validateNumber(val, 'Price') },
-      { id: 'inv_miles', name: 'Mileage', validator: (val) => validateRequired(val, 'Mileage') || validateNumber(val, 'Mileage') },
-      { id: 'inv_description', name: 'Description', validator: validateRequired },
-      { id: 'inv_image', name: 'Image path', validator: (val) => validateRequired(val, 'Image path') || validatePath(val, 'Image path') },
-      { id: 'inv_thumbnail', name: 'Thumbnail path', validator: (val) => validateRequired(val, 'Thumbnail path') || validatePath(val, 'Thumbnail path') }
-    ];
-    
-    fields.forEach(field => {
-      const element = document.getElementById(field.id);
-      const error = field.validator(element.value, field.name);
-      if (error) {
-        showValidation(element, error, true);
-        hasErrors = true;
-      }
-    });
-    
-    // Check classification
-    const classificationList = document.getElementById('classificationList');
-    if (!classificationList.value) {
-      showValidation(classificationList, 'Please select a classification.', true);
-      hasErrors = true;
-    }
-    
-    if (hasErrors) {
-      e.preventDefault();
-      // Scroll to first error
-      const firstError = document.querySelector('.validation-message.error');
-      if (firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  });
-});
-</script>
+<script src="../../js/inv-update.js"></script>

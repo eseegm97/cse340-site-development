@@ -1,41 +1,21 @@
-<!-- Inventory Management View -->
 <% if (title) { %>
-  <h1><%= title %></h1>
+    <h1><%= title %></h1>
 <% } else {
-  res.redirect('/')
+    res.redirect('/')
 } %>
 
-<!-- Flash message display -->
 <%- messages() %>
 
-<div class="management-container">
-  <h2>Vehicle Management</h2>
-  <p>Welcome to the inventory management system. Use the links below to manage vehicle classifications and inventory.</p>
-  
-  <div class="management-actions">
-    <div class="action-item">
-      <h3>Classification Management</h3>
-      <p>Add new vehicle classifications to organize your inventory.</p>
-      <a href="/inv/add-classification" class="btn btn-primary">Add New Classification</a>
-    </div>
-    
-    <div class="action-item">
-      <h3>Inventory Management</h3>
-      <p>Add new vehicles to your inventory system.</p>
-      <a href="/inv/add-inventory" class="btn btn-primary">Add New Vehicle</a>
-    </div>
-  </div>
+<p><a href="/inv/add-classification" class="link">Add New Classification</a></p>
+<p><a href="/inv/add-inventory" class="link">Add New Vehicle</a></p>
 
-  <h2>Manage Inventory</h2>
-  <p>Select a classification from the list to see the items belonging to the classification.</p>
-  
-  <% if (locals.classificationList) { %>
-    <%= classificationList %>
-  <% } %>
-  
-  <table id="inventoryDisplay"></table>
-  
-  <noscript>JavaScript must be enabled to use this page.</noscript>
+
+<h2>Manage Inventory</h2>
+<p>Select a classification from the list to see the items belonging to the classification</p>
+<div id="classificationSelect">
+    <%- classificationSelect %>
 </div>
+<table id="inventoryDisplay"></table>
+<noscript>JavaScript must be enabled to use this page.</noscript>
 
 <script src="../../js/inventory.js"></script>
