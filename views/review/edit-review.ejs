@@ -1,0 +1,41 @@
+<%- include('../partials/head') %>
+
+<div id="editReview">
+    <% if (title) { %>
+        <h1><%= title %></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    
+    <%- messages() %>
+    
+    <% if (errors) { %>
+        <ul class="notice">
+            <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+    
+    <form action="/review/update" method="post" id="editReviewForm">
+        <div class="form-group">
+            <label for="review_text">Edit Your Review:</label>
+            <textarea 
+                name="review_text" 
+                id="review_text" 
+                required 
+                placeholder="Write your review here..."
+                rows="5" 
+                cols="50"><%= review_text %></textarea>
+        </div>
+        
+        <!-- Hidden fields -->
+        <input type="hidden" name="review_id" value="<%= review_id %>">
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+        
+        <div class="form-actions">
+            <button type="submit" class="submit-button">Update Review</button>
+            <a href="/account/" class="cancel-button">Cancel</a>
+        </div>
+    </form>
+</div>

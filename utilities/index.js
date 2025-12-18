@@ -87,24 +87,34 @@ Util.buildVehicleReviewsView = async function (reviewsData, account_id) {
     // If reviews, loop reviews and create
     if (reviewsData.length > 0) {
         reviewsData.forEach(review => {
+            // Format date
+            const reviewDate = new Date(review.review_date);
+            const formattedDate = reviewDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Create screen name (first initial + last name)
+            const screenName = review.account_firstname.charAt(0) + review.account_lastname;
+            
             returnedView += `
                 <div class="review">
-                    <p>${review.review_text}</p>
-                    <p class="review-details">${review.account_firstname} ${review.account_lastname}</p>
-                    <p class="review-details" id="timestamp">${review.review_date}</p>
+                    <p class="review-text">${review.review_text}</p>
+                    <p class="review-author">by ${screenName} on ${formattedDate}</p>
             `
             if (review.account_id === account_id) {
                 returnedView += `
-                    <div class="updateDeleteReview">
-                        <a href="/inv/detail/update/${review.review_id}">Update</a>
-                        <a href="/inv/detail/delete/${review.review_id}">Delete</a>
+                    <div class="review-actions">
+                        <a href="/review/edit/${review.review_id}" class="edit-review">Edit</a>
+                        <a href="/review/delete/${review.review_id}" class="delete-review">Delete</a>
                     </div>
                 `
             }
             returnedView += `</div>`
         })
     } else {
-        returnedView += '<p>No Reviews</p>'
+        returnedView += '<p class="no-reviews">Be the first to review this vehicle!</p>'
     }
 
     // Close reviews div

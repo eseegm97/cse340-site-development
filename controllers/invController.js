@@ -39,7 +39,7 @@ invCont.buildVehicleDetailsView = async function(req, res, next) {
     }
     const reviews = await utilities.buildVehicleReviewsView(reviewsResult, account_id)
     
-    res.render("./inventory/details", {
+    res.render("./inventory/detail", {
         title: `${vehicleYear} ${vehicleMake} ${vehicleModel}`,
         nav,
         details,

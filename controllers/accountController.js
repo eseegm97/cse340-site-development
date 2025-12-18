@@ -9,10 +9,26 @@ require("dotenv").config()
  * *************************************** */
 async function buildAccountManagement(req, res, next) {
     let nav = await utilities.getNav()
+    
+    // Get user's reviews if logged in
+    let userReviews = []
+    if (res.locals.accountData && res.locals.accountData.account_id) {
+        // Check if function exists in inventory model first
+        const invModel = require('../models/inventory-model')
+        if (typeof invModel.getReviewsByAccountId === 'function') {
+            userReviews = await invModel.getReviewsByAccountId(res.locals.accountData.account_id)
+        } else {
+            // Use our review model as fallback
+            const reviewModel = require('../models/review-model')
+            userReviews = await reviewModel.getReviewsByAccountId(res.locals.accountData.account_id)
+        }
+    }
+    
     res.render("account/account-management", {
         title: "Account Management",
         nav,
-        errors: null
+        errors: null,
+        userReviews
     })
 }
 

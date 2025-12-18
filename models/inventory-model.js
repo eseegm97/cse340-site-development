@@ -280,6 +280,27 @@ async function deleteAllReviewsByInvId(inv_id) {
     }
 }
 
+/* ******************************
+ * Get all reviews by account_id
+ * ****************************** */
+async function getReviewsByAccountId(account_id) {
+    try {
+        const sql = `
+            SELECT r.review_id, r.review_text, r.review_date, r.inv_id,
+                   i.inv_year, i.inv_make, i.inv_model
+            FROM public.review r
+            JOIN public.inventory i ON r.inv_id = i.inv_id
+            WHERE r.account_id = $1
+            ORDER BY r.review_date DESC
+        `
+        const data = await pool.query(sql, [account_id])
+        return data.rows
+    } catch (error) {
+        console.error(`getReviewsByAccountId error: ${error}`)
+        return []
+    }
+}
+
 module.exports = { 
     getClassifications,
     getInventoryByClassificationId,
@@ -293,5 +314,6 @@ module.exports = {
     getReviewByReviewId,
     updateReview,
     deleteReviewByReviewId,
-    deleteAllReviewsByInvId
+    deleteAllReviewsByInvId,
+    getReviewsByAccountId
 }

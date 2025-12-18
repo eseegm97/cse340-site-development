@@ -3,6 +3,49 @@
 <section class="inventory-detail-view">
   <!-- Title and breadcrumb are rendered by layout/head using `title` -->
   <main>
-    <%- vehicleDetailHTML %>
+    <%- details %>
+    
+    <!-- Reviews Section -->
+    <%- reviews %>
+    
+    <!-- Review Form Section -->
+    <% if (locals.accountData) { %>
+        <div class="add-review-section">
+            <h3>Add a Review</h3>
+            <% if (errors) { %>
+                <div class="notice">
+                    <% errors.forEach(function(error) { %>
+                        <p class="error-message"><%= error.msg %></p>
+                    <% }) %>
+                </div>
+            <% } %>
+            <form action="/review/add-review" method="post">
+                <div class="form-group">
+                    <label for="review_text">Your Review:</label>
+                    <textarea name="review_text" id="review_text" required 
+                              placeholder="Write your review here..."
+                              rows="5" cols="50"><%= locals.review_text || '' %></textarea>
+                </div>
+                
+                <!-- Display screen name (not editable) -->
+                <div class="form-group">
+                    <label>Reviewer:</label>
+                    <p class="screen-name">
+                        <%= accountData.account_firstname.charAt(0) %><%= accountData.account_lastname %>
+                    </p>
+                </div>
+                
+                <!-- Hidden fields -->
+                <input type="hidden" name="inv_id" value="<%= inv_id %>">
+                <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+                
+                <button type="submit" class="submit-button">Submit Review</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div class="login-prompt">
+            <p>To add a review, please <a href="/account/login">log in</a>.</p>
+        </div>
+    <% } %>
   </main>
 </section>
