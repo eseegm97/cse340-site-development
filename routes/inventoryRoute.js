@@ -1,45 +1,138 @@
 const express = require("express")
-const router = new express.Router() 
+const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities/")
-
-// Route to build inventory management view - ADMIN ONLY
-router.get("/", utilities.checkAccountType, utilities.handleErrors(invController.buildManagement));
-
-// Route to build add classification view - ADMIN ONLY
-router.get("/add-classification", utilities.checkAccountType, utilities.handleErrors(invController.buildAddClassification));
-
-// Route to process add classification form - ADMIN ONLY
-router.post("/add-classification", utilities.checkAccountType, utilities.handleErrors(invController.processAddClassification));
-
-// Route to build add inventory view - ADMIN ONLY
-router.get("/add-inventory", utilities.checkAccountType, utilities.handleErrors(invController.buildAddInventory));
-
-// Route to process add inventory form - ADMIN ONLY
-router.post("/add-inventory", utilities.checkAccountType, utilities.handleErrors(invController.processAddInventory));
+const inventoryValidate = require("../utilities/inventory-validation")
 
 // Route to build inventory by classification view
-router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
+router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))
 
-// Route to build inventory detail view
-router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId));
+// Route to build vehicle details view
+router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildVehicleDetailsView))
 
-// Route to get inventory by classification as JSON - ADMIN ONLY (used for admin forms)
-router.get("/getInventory/:classification_id", utilities.checkAccountType, utilities.handleErrors(invController.getInventoryJSON));
+// Process add review
+router.post(
+    "/detail/:inventoryId",
+    inventoryValidate.addReviewRules(),
+    inventoryValidate.checkAddReviewData,
+    utilities.checkLogin,
+    utilities.handleErrors(invController.addReview)
+)
 
-// Intentional error route for testing error handling
-router.get("/error-test", utilities.handleErrors(invController.triggerError));
+// Route to build update review view
+router.get(
+    "/detail/update/:review_id",
+    utilities.checkLogin,
+    utilities.handleErrors(invController.buildUpdateReviewView)
+)
 
-// Route to build inventory edit view - ADMIN ONLY
-router.get("/edit/:inventory_id", utilities.checkAccountType, utilities.handleErrors(invController.buildEditInventory));
+// Process update review
+router.post(
+    "/detail/update/:review_id",
+    inventoryValidate.addReviewRules(),
+    inventoryValidate.checkUpdateReviewData,
+    utilities.checkLogin,
+    utilities.handleErrors(invController.updateReview)
+)
 
-// Route to handle incoming requests - ADMIN ONLY
-router.post("/update/", utilities.checkAccountType, utilities.handleErrors(invController.updateInventory));
+// Route to bulid confirm delete review view
+router.get(
+    "/detail/delete/:review_id",
+    utilities.checkLogin,
+    utilities.handleErrors(invController.buildConfirmDeleteReviewView)
+)
 
-// Route to get delete view - ADMIN ONLY
-router.get("/delete/:inv_id", utilities.checkAccountType, utilities.handleErrors(invController.deleteInventoryView));
+// Process delete review
+router.post(
+    "/detail/delete/:review_id",
+    utilities.checkLogin,
+    utilities.handleErrors(invController.deleteReview)
+)
 
-// Process delete inventory - ADMIN ONLY
-router.post("/delete/", utilities.checkAccountType, utilities.handleErrors(invController.deleteInventory));
+// Route to build management view
+router.get(
+    "/", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.buildManagementView)
+)
 
-module.exports = router;
+// Route to build add classification view
+router.get(
+    "/add-classification", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.buildAddClassificationView)
+)
+
+// Route to build add inventory view
+router.get(
+    "/add-inventory", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.buildAddInventoryView)
+)
+
+// Process adding a new classification
+router.post(
+    "/add-classification",
+    inventoryValidate.newClassificationRules(),
+    inventoryValidate.checkNewClassificationData,
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.addNewClassification)
+)
+
+// Process adding a new inventory
+router.post(
+    "/add-inventory",
+    inventoryValidate.newInventoryRules(),
+    inventoryValidate.checkNewInventoryData,
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.addNewInventory)
+)
+
+// Route to get edit inventory info
+router.get(
+    "/getInventory/:classification_id", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.getInventoryJSON)
+)
+
+// Route to modify inventory
+router.get(
+    "/edit/:inventory_id",
+    utilities.checkLogin, 
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.modifyInventoryView)
+)
+
+// Process modify inventory
+router.post(
+    "/update/", 
+    inventoryValidate.newInventoryRules(),
+    inventoryValidate.checkUpdateData,
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.updateInventory)
+)
+
+// Route to get delete view
+router.get(
+    "/delete/:inv_id", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.deleteInventoryView)
+)
+
+// Process delete inventory
+router.post(
+    "/delete/", 
+    utilities.checkLogin,
+    utilities.checkEmployeeAdmin,
+    utilities.handleErrors(invController.deleteInventory)
+)
+
+module.exports = router
