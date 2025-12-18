@@ -6,36 +6,37 @@
  * Require Statements
  *************************/
 const express = require("express")
+const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
-const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
-const utilities = require("./utilities")
+const utilities = require('./utilities/')
 const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 
 /* ***********************
- * Middleware
- * ************************/
- app.use(session({
+* Middleware
+* ************************/
+app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
     pool,
   }),
   secret: process.env.SESSION_SECRET,
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   name: 'sessionId',
+  cookie: {
+    secure: false, // Set to true in production with HTTPS
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+  }
 }))
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use(cookieParser())
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -44,12 +45,18 @@ app.use(function(req, res, next){
   next()
 })
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+// Allow the cookieParser to be implemented throughout the project
+app.use(cookieParser())
+
+// Check JWT token if exists
 app.use(utilities.checkJWTToken)
 
 /* ***********************
  * View Engine and Templates
  *************************/
-
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
@@ -62,25 +69,31 @@ app.use(static)
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
-// Inventory routes
+// Inventory route
 app.use("/inv", inventoryRoute)
 
-// Account routes
-app.use("/account", require("./routes/accountRoute"))
+// Account route
+app.use("/account", accountRoute)
+
+// 500 Error route - should throw a 500 error that is handled by utilities.handleErrors
+app.get("/error500", utilities.handleErrors(baseController.error500))
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+  next({
+    status: 404,
+    message: 'Sorry, we appear to have lost that page.'
+  })
 })
 
 /* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
+ * Express Error Handler
+ * Place after all other middleware
+ *************************/
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  err.status === 404 ? message = err.message : message = 'Oh no! There was a crash. Maybe try a different route?'
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message,
